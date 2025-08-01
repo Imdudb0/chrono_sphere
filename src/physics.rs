@@ -1,5 +1,6 @@
 use bevy::prelude::*;
 use crate::sphere::{Sphere, SphereVelocity};
+use crate::chrono_slowmo::ChronoState;
 
 #[derive(Resource)]
 pub struct PhysicsSettings {
@@ -35,20 +36,24 @@ impl Plugin for PhysicsPlugin {
 fn apply_gravity(
     time: Res<Time>,
     physics: Res<PhysicsSettings>,
+    chrono_state: Res<ChronoState>,
     mut sphere_query: Query<&mut SphereVelocity, With<Sphere>>,
 ) {
+    let delta = time.delta_seconds() * chrono_state.current_time_scale;
     for mut velocity in sphere_query.iter_mut() {
-        velocity.velocity += physics.gravity * time.delta_seconds();
+        velocity.velocity += physics.gravity * delta;
     }
 }
 
 fn apply_air_resistance(
+    time: Res<Time>,
     physics: Res<PhysicsSettings>,
+    chrono_state: Res<ChronoState>,
     mut sphere_query: Query<&mut SphereVelocity, With<Sphere>>,
 ) {
+    let resistance_factor = 1.0 - (physics.air_resistance * time.delta_seconds() * chrono_state.current_time_scale);
     for mut velocity in sphere_query.iter_mut() {
-        let resistance = velocity.velocity * physics.air_resistance;
-        velocity.velocity -= resistance;
+        velocity.velocity *= resistance_factor;
     }
 }
 

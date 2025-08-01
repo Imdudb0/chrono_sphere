@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use bevy::time::Virtual;
 use crate::controls::InputState;
 
 #[derive(Resource)]
@@ -111,7 +112,7 @@ fn apply_time_scale(
     chrono_state: Res<ChronoState>,
     mut time: ResMut<Time<Virtual>>,
 ) {
-    // Application du facteur temporel à la physique
+    // Bevy 0.16 supporte le time scaling virtuel !
     let effective_scale = chrono_state.current_time_scale;
     time.set_relative_speed(effective_scale);
 }
@@ -126,8 +127,8 @@ fn update_visual_effects(
             let slowmo_intensity = 1.0 - chrono_state.current_time_scale;
             
             // Effet visuel : Plus le ralenti est actif, plus la sphère devient brillante
-            let base_emissive = Color::rgb(0.1, 0.4, 0.6);
-            let boosted_emissive = Color::rgb(
+            let base_emissive = LinearRgba::rgb(0.1, 0.4, 0.6);
+            let boosted_emissive = LinearRgba::rgb(
                 0.1 + slowmo_intensity * 0.4,
                 0.4 + slowmo_intensity * 0.4,
                 0.6 + slowmo_intensity * 0.6,
@@ -137,7 +138,7 @@ fn update_visual_effects(
             
             // Effet de transparence pendant le slowmo
             let alpha = 0.9 + slowmo_intensity * 0.1;
-            material.base_color = Color::rgba(0.2, 0.8, 1.0, alpha);
+            material.base_color = Color::srgba(0.2, 0.8, 1.0, alpha);
         }
     }
 }

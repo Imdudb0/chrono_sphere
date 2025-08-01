@@ -17,6 +17,7 @@ pub fn setup_chrono_sphere_app() -> App {
         primary_window: Some(Window {
             title: "Chrono Sphere".to_string(),
             resolution: (800.0, 600.0).into(),
+            present_mode: bevy::window::PresentMode::AutoVsync, // Optimisation mobile
             ..default()
         }),
         ..default()
