@@ -36,6 +36,14 @@ bevy = { version = "0.12", default-features = false, features = [
     "bevy_debug_stepping",
 ]}
 
+[lib]
+name = "chrono_sphere"
+crate-type = ["cdylib"]
+
+[[bin]]
+name = "chrono_sphere"
+path = "src/main.rs"
+
 [profile.release]
 opt-level = 3
 lto = true
@@ -47,17 +55,13 @@ strip = true
 opt-level = 1
 
 # Configuration Android spécifique
-[[bin]]
-name = "chrono_sphere"
-path = "src/main.rs"
-
 [package.metadata.android]
 package = "com.chronosphere.game"
 build_targets = ["armv7-linux-androideabi"]
 
 permission = [
-	{name = "android.permission.WAKE_LOCK"},
-	{name = "android.permission.VIBRATE"},
+    { name = "android.permission.WAKE_LOCK" },
+    { name = "android.permission.VIBRATE" },
 ]
 
 orientation = "landscape"

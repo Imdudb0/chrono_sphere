@@ -104,21 +104,6 @@ jobs:
         echo "Building Debug APK for ARMv7..."
         cargo apk build --target armv7-linux-androideabi
         
-    - name: 🔨 Build Debug APK (ARM64)  
-      run: |
-        echo "Building Debug APK for ARM64..."
-        cargo apk build --target aarch64-linux-android
-        
-    - name: 🚀 Build Release APK (ARMv7)
-      run: |
-        echo "Building Release APK for ARMv7..."
-        cargo apk build --release --target armv7-linux-androideabi
-        
-    - name: 🚀 Build Release APK (ARM64)
-      run: |
-        echo "Building Release APK for ARM64..."
-        cargo apk build --release --target aarch64-linux-android
-        
     - name: 📋 List build outputs
       run: |
         echo "=== Build Results ==="
