@@ -55,6 +55,11 @@ path = "src/main.rs"
 package = "com.chronosphere.game"
 build_targets = ["armv7-linux-androideabi"]
 
+permission = [
+	{name = "android.permission.WAKE_LOCK"},
+	{name = "android.permission.VIBRATE"},
+]
+
 orientation = "landscape"
 
 [package.metadata.android.application]
@@ -63,7 +68,3 @@ theme = "@android:style/Theme.DeviceDefault.NoActionBar.Fullscreen"
 target_sdk_version = 34
 min_sdk_version = 23
 compile_sdk_version = 34
-
-[[package.metadata.android.uses_permission]]
-name = "android.permission.WAKE_LOCK"
-name = "android.permission.VIBRATE"
