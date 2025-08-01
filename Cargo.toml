@@ -17,9 +17,6 @@ bevy = { version = "0.16", default-features = false, features = [
     "bevy_audio",
     "vorbis",
 
-    # Input tactile
-    "bevy_input",
-
     # UI basique
     "bevy_ui",
     "bevy_text",
