@@ -1,6 +1,80 @@
 [package]
 name = "chrono_sphere"
 version = "0.1.0"
-edition = "2024"
+edition = "2021"
 
 [dependencies]
+bevy = { version = "0.12", default-features = false, features = [
+    # Rendu mobile optimisé
+    "bevy_render",
+    "bevy_core_pipeline", 
+    "bevy_pbr",
+    "bevy_asset",
+    "bevy_scene",
+    "bevy_winit",
+    
+    # Audio léger
+    "bevy_audio",
+    "vorbis",
+    
+    # Input tactile
+    "bevy_input",
+    
+    # UI basique
+    "bevy_ui",
+    "bevy_text",
+    
+    # Optimisations mobile
+    "multi-threaded",
+    "bevy_gltf",
+    
+    # Format d'image mobile
+    "png",
+    "jpeg",
+    
+    # Debug conditionnel
+    "bevy_debug_stepping",
+]}
+
+# Optimisations pour mobile
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[profile.dev]
+opt-level = 1
+
+# Configuration Android spécifique
+[[bin]]
+name = "chrono_sphere"
+path = "src/main.rs"
+
+[package.metadata.android]
+# Configuration APK
+package = "com.chronosphere.game"
+label = "Chrono-Sphere"
+icon = "@mipmap/ic_launcher"
+theme = "@android:style/Theme.DeviceDefault.NoActionBar.Fullscreen"
+
+# Permissions Android
+permission = [
+    { name = "android.permission.WAKE_LOCK" },
+    { name = "android.permission.VIBRATE" },
+]
+
+# Orientations supportées
+orientation = "landscape"
+
+# Version SDK cible
+[package.metadata.android.sdk]
+target_sdk_version = 30
+min_sdk_version = 21
+
+# Configuration build pour différentes architectures
+[package.metadata.android.signing.release]
+# Remplacez par votre keystore pour release
+# keystore = "path/to/keystore.jks"
+# key_alias = "release_key"

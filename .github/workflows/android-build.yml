@@ -24,7 +24,7 @@ jobs:
       uses: dtolnay/rust-toolchain@stable
       with:
         toolchain: stable
-        targets: aarch64-linux-android
+        targets: aarch64-linux-android,armv7-linux-androideabi
         
     - name: ☕ Setup Java 17
       uses: actions/setup-java@v4
@@ -57,9 +57,11 @@ jobs:
         # Accept licenses
         yes | sdkmanager --licenses >/dev/null 2>&1
         
-        # Install required components
+        # Install required components including platforms 30 and 33
         sdkmanager --install \
+          "platforms;android-30" \
           "platforms;android-33" \
+          "build-tools;30.0.3" \
           "build-tools;33.0.2" \
           "platform-tools" \
           "ndk;25.2.9519653"
@@ -97,14 +99,24 @@ jobs:
         echo "NDK directory:"
         ls -la $ANDROID_HOME/ndk/ 2>/dev/null || echo "NDK not found"
         
-    - name: 🔨 Build Debug APK
+    - name: 🔨 Build Debug APK (ARMv7)
       run: |
-        echo "Building Debug APK..."
+        echo "Building Debug APK for ARMv7..."
+        cargo apk build --target armv7-linux-androideabi
+        
+    - name: 🔨 Build Debug APK (ARM64)  
+      run: |
+        echo "Building Debug APK for ARM64..."
         cargo apk build --target aarch64-linux-android
         
-    - name: 🚀 Build Release APK  
+    - name: 🚀 Build Release APK (ARMv7)
       run: |
-        echo "Building Release APK..."
+        echo "Building Release APK for ARMv7..."
+        cargo apk build --release --target armv7-linux-androideabi
+        
+    - name: 🚀 Build Release APK (ARM64)
+      run: |
+        echo "Building Release APK for ARM64..."
         cargo apk build --release --target aarch64-linux-android
         
     - name: 📋 List build outputs
@@ -118,21 +130,39 @@ jobs:
         echo "Release APK directory:"  
         ls -la target/release/apk/ 2>/dev/null || echo "No release APK found"
         
-    - name: 📤 Upload Debug APK
+    - name: 📤 Upload Debug APK (ARMv7)
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: chrono-sphere-debug
-        path: target/debug/apk/*.apk
+        name: chrono-sphere-debug-armv7
+        path: target/armv7-linux-androideabi/debug/apk/*.apk
         if-no-files-found: warn
         retention-days: 30
         
-    - name: 📤 Upload Release APK
+    - name: 📤 Upload Debug APK (ARM64)
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: chrono-sphere-release
-        path: target/release/apk/*.apk
+        name: chrono-sphere-debug-arm64
+        path: target/aarch64-linux-android/debug/apk/*.apk
+        if-no-files-found: warn
+        retention-days: 30
+        
+    - name: 📤 Upload Release APK (ARMv7)
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: chrono-sphere-release-armv7
+        path: target/armv7-linux-androideabi/release/apk/*.apk
+        if-no-files-found: warn
+        retention-days: 90
+        
+    - name: 📤 Upload Release APK (ARM64)
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: chrono-sphere-release-arm64
+        path: target/aarch64-linux-android/release/apk/*.apk
         if-no-files-found: warn
         retention-days: 90
         
