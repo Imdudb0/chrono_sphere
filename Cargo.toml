@@ -4,8 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-bevy = { version = "0.12", default-features = false, features = [
-    # Rendu mobile optimisé
+bevy = { version = "0.16", default-features = false, features = [
+    # Rendu mobile optimisé (GPU-driven rendering)
     "bevy_render",
     "bevy_core_pipeline",
     "bevy_pbr",
@@ -25,15 +25,15 @@ bevy = { version = "0.12", default-features = false, features = [
     "bevy_text",
 
     # Optimisations mobile
-    "multi-threaded",
+    "multi_threaded",
     "bevy_gltf",
 
     # Format d'image mobile
     "png",
     "jpeg",
 
-    # Debug conditionnel
-    "bevy_debug_stepping",
+    # Time virtuel pour le chrono-ralenti
+    "bevy_time",
 ]}
 
 [lib]
@@ -57,7 +57,7 @@ opt-level = 1
 # Configuration Android spécifique
 [package.metadata.android]
 package = "com.chronosphere.game"
-build_targets = ["armv7-linux-androideabi"]
+build_targets = ["armv7-linux-androideabi", "aarch64-linux-android"]
 
 permission = [
     { name = "android.permission.WAKE_LOCK" },
