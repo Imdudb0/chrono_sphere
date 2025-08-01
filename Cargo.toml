@@ -74,7 +74,7 @@ target_sdk_version = 30
 min_sdk_version = 21
 
 # Configuration build pour différentes architectures
-[package.metadata.android.signing.release]
+#[package.metadata.android.signing.release]
 # Remplacez par votre keystore pour release
-keystore = "path/to/keystore.jks"
-key_alias = "release_key"
+#keystore = "path/to/keystore.jks"
+#key_alias = "release_key"
